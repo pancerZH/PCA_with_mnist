@@ -58,3 +58,14 @@ def learnPCA(self):
 
 ### 参考网址
 [TensorFlow官方中文社区](http://www.tensorfly.cn/tfdoc/tutorials/mnist_pros.html)
+
+### 使用2DPCA的设计想法  
+注意到input_data.py的line 101处有注释和代码：
+```python
+# Convert shape from [num examples, rows, columns, depth]
+# to [num examples, rows*columns] (assuming depth == 1)
+assert images.shape[3] == 1
+images = images.reshape(images.shape[0], images.shape[1] * images.shape[2])
+```
+这里将图片数据由[图片数目,行,列,深度]转化为[图片数目,行x列]。由于此处深度depth==1，故将其舍弃。那么在进行2DPCA时，将无需此转换。  
+[在这里记录网页链接](http://blog.csdn.net/lifeng_math/article/details/50474740)
