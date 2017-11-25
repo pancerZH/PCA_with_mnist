@@ -54,4 +54,6 @@ if __name__ == '__main__':
     data2_2DPCA, data2_2D2DPCA = TTwoDPCA(data2, 10)
     print('data2_2DPCA:{}'.format(data2_2DPCA.shape))
     print('data2_2D2DPCA:{}'.format(data2_2D2DPCA.shape))
-    
+    new_img = Image.fromarray(data2_2D2DPCA)
+    new_img.show()
+    im_grey.show()
