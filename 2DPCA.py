@@ -26,7 +26,7 @@ def TwoDPCA(imgs, dim):
             break
     '''
     u = v[:,:dim]
-    return u
+    return u  # u是投影矩阵
 
 
 def TTwoDPCA(imgs, dim):
@@ -40,7 +40,7 @@ def TTwoDPCA(imgs, dim):
     print('img_shape:{}'.format(img.shape))
     uu = TwoDPCA(img, dim)
     print('uu_shape:{}'.format(uu.shape))
-    return u,uu
+    return u,uu  # uu是投影矩阵
 
 if __name__ == '__main__':
     im = Image.open('./bloodborne2.jpg')
@@ -54,6 +54,3 @@ if __name__ == '__main__':
     data2_2DPCA, data2_2D2DPCA = TTwoDPCA(data2, 10)
     print('data2_2DPCA:{}'.format(data2_2DPCA.shape))
     print('data2_2D2DPCA:{}'.format(data2_2D2DPCA.shape))
-    new_img = Image.fromarray(data2_2D2DPCA)
-    new_img.show()
-    im_grey.show()
