@@ -42,6 +42,17 @@ def TTwoDPCA(imgs, dim):
     print('uu_shape:{}'.format(uu.shape))
     return u,uu  # uu是投影矩阵
 
+
+def image_2D2DPCA(images, u, uu):
+    a, b, c = images.shape
+    new_images = np.ones((a, uu.shape[1], u.shape[1]))
+    for i in range(a):
+        Y = np.dot(uu.T, images[i,:,:])
+        Y = np.dot(Y, u)
+        new_images[i,:,:] = Y
+    return new_images
+
+
 if __name__ == '__main__':
     im = Image.open('./bloodborne2.jpg')
     im_grey = im.convert('L')
@@ -51,6 +62,8 @@ if __name__ == '__main__':
     data = np.array(data)
     data2 = data.reshape(1, a, b)
     print('data2_shape:{}'.format(data2.shape))
-    data2_2DPCA, data2_2D2DPCA = TTwoDPCA(data2, 10)
-    print('data2_2DPCA:{}'.format(data2_2DPCA.shape))
-    print('data2_2D2DPCA:{}'.format(data2_2D2DPCA.shape))
+    u, uu = TTwoDPCA(data2, 10)
+    print('data2_2DPCA_u:{}'.format(u.shape))
+    print('data2_2D2DPCA_uu:{}'.format(uu.shape))
+    new_images = image_2D2DPCA(data2, u, uu)
+    print('new_images:{}'.format(new_images.shape))
