@@ -35,7 +35,7 @@ def TTwoDPCA(imgs, dim):
     img = []
     for i in range(a1):
         temp1 = np.dot(imgs[i,:,:],u)
-        img.append(temp1)
+        img.append(temp1.T)
     img = np.array(img)
     print('img_shape:{}'.format(img.shape))
     uu = TwoDPCA(img, dim)
