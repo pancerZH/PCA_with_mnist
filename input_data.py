@@ -20,12 +20,11 @@ import gzip
 import os
 import tensorflow.python.platform
 import numpy
+import TDPCA
 from six.moves import urllib
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
-from sklearn.decomposition import PCA
-pca = PCA(n_components=100)
-usePCA = False
+U = UU = None
 SOURCE_URL = 'http://yann.lecun.com/exdb/mnist/'
 def maybe_download(filename, work_directory):
   """Download the data from Yann's website, unless it's already here."""
@@ -101,6 +100,15 @@ class DataSet(object):
       # Convert shape from [num examples, rows, columns, depth]
       # to [num examples, rows*columns] (assuming depth == 1)
       assert images.shape[3] == 1
+      global U, UU
+      images = images.reshape(images.shape[0], images.shape[1], images.shape[2])
+      if U == None:
+        # 进行二维PCA
+        # U, UU = TDPCA.TTwoDPCA(images, 15)
+        U, UU = TDPCA.PCA2D_2D(images, 10, 10)
+        print('calculate U and UU')
+      images = TDPCA.image_2D2DPCA(images, U, UU)
+      print('images:{}'.format(images.shape))
       images = images.reshape(images.shape[0],
                               images.shape[1] * images.shape[2])
       if dtype == tf.float32:
@@ -113,11 +121,7 @@ class DataSet(object):
     self._index_in_epoch = 0
   @property
   def images(self):
-    if usePCA == True:
-      newImages = pca.transform(self._images)
-      return newImages
-    else:
-      return self._images
+    return self._images
   @property
   def labels(self):
     return self._labels
@@ -153,9 +157,6 @@ class DataSet(object):
       assert batch_size <= self._num_examples
     end = self._index_in_epoch
     return self._images[start:end], self._labels[start:end]
-  def learnPCA(self):
-    self._images = pca.fit_transform(self._images)
-    usePCA = True
 def read_data_sets(train_dir, fake_data=False, one_hot=False, dtype=tf.float32):
   class DataSets(object):
     pass

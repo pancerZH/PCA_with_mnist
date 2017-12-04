@@ -25,7 +25,9 @@ def TwoDPCA(imgs, dim):
             u = v[:,:k]
             break
     '''
+    print('alpha={}'.format(sum(w[:dim]*1.0/sum(w))))
     u = v[:,:dim]
+    print('u_shape:{}'.format(u.shape))
     return u  # u是投影矩阵
 
 
@@ -37,10 +39,46 @@ def TTwoDPCA(imgs, dim):
         temp1 = np.dot(imgs[i,:,:],u)
         img.append(temp1.T)
     img = np.array(img)
-    print('img_shape:{}'.format(img.shape))
     uu = TwoDPCA(img, dim)
     print('uu_shape:{}'.format(uu.shape))
     return u,uu  # uu是投影矩阵
+
+
+def PCA2D_2D(samples, row_top, col_top):
+    '''samples are 2d matrices'''
+    size = samples[0].shape
+    # m*n matrix
+    mean = np.zeros(size)
+
+    for s in samples:
+        mean = mean + s
+
+    # get the mean of all samples
+    mean /= float(len(samples))
+
+    # n*n matrix
+    cov_row = np.zeros((size[1],size[1]))
+    for s in samples:
+        diff = s - mean
+        cov_row = cov_row + np.dot(diff.T, diff)
+    cov_row /= float(len(samples))
+    row_eval, row_evec = np.linalg.eig(cov_row)
+    # select the top t evals
+    sorted_index = np.argsort(row_eval)
+    # using slice operation to reverse
+    X = row_evec[:,sorted_index[:-row_top-1 : -1]]
+
+    # m*m matrix
+    cov_col = np.zeros((size[0], size[0]))
+    for s in samples:
+        diff = s - mean
+        cov_col += np.dot(diff,diff.T)
+    cov_col /= float(len(samples))
+    col_eval, col_evec = np.linalg.eig(cov_col)
+    sorted_index = np.argsort(col_eval)
+    Z = col_evec[:,sorted_index[:-col_top-1 : -1]]
+
+    return X, Z
 
 
 def image_2D2DPCA(images, u, uu):
