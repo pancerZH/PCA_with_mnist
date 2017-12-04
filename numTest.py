@@ -18,7 +18,6 @@ init = tf.global_variables_initializer()
 sess = tf.Session()
 sess.run(init)
 
-mnist.train.learnPCA()
 for i in range(1000):
     batch_xs, batch_ys = mnist.train.next_batch(100)
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
