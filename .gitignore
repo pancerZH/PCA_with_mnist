@@ -1,4 +1,10 @@
 *.pdf
 *.html
+<<<<<<< HEAD
 a.png
 bloodborne2.jpg
+=======
+MNIST_data
+bloodborne2.jpg
+a.png
+>>>>>>> 2dPCA

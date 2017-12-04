@@ -20,12 +20,17 @@ import gzip
 import os
 import tensorflow.python.platform
 import numpy
+import TDPCA
 from six.moves import urllib
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
+<<<<<<< HEAD
 from sklearn.decomposition import PCA
 # pca = PCA(n_components=100)
 pca = None
+=======
+U = UU = None
+>>>>>>> 2dPCA
 SOURCE_URL = 'http://yann.lecun.com/exdb/mnist/'
 def maybe_download(filename, work_directory):
   """Download the data from Yann's website, unless it's already here."""
@@ -101,6 +106,15 @@ class DataSet(object):
       # Convert shape from [num examples, rows, columns, depth]
       # to [num examples, rows*columns] (assuming depth == 1)
       assert images.shape[3] == 1
+      global U, UU
+      images = images.reshape(images.shape[0], images.shape[1], images.shape[2])
+      if U == None:
+        # 进行二维PCA
+        # U, UU = TDPCA.TTwoDPCA(images, 15)
+        U, UU = TDPCA.PCA2D_2D(images, 10, 10)
+        print('calculate U and UU')
+      images = TDPCA.image_2D2DPCA(images, U, UU)
+      print('images:{}'.format(images.shape))
       images = images.reshape(images.shape[0],
                               images.shape[1] * images.shape[2])
       # 进行PCA
