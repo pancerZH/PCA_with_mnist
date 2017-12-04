@@ -24,13 +24,7 @@ import TDPCA
 from six.moves import urllib
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
-<<<<<<< HEAD
-from sklearn.decomposition import PCA
-# pca = PCA(n_components=100)
-pca = None
-=======
 U = UU = None
->>>>>>> 2dPCA
 SOURCE_URL = 'http://yann.lecun.com/exdb/mnist/'
 def maybe_download(filename, work_directory):
   """Download the data from Yann's website, unless it's already here."""
@@ -117,6 +111,7 @@ class DataSet(object):
       print('images:{}'.format(images.shape))
       images = images.reshape(images.shape[0],
                               images.shape[1] * images.shape[2])
+      '''
       # 进行PCA
       global pca
       if pca is None:
@@ -124,6 +119,7 @@ class DataSet(object):
         images = pca.fit_transform(images)
       else:
         images = pca.transform(images)
+      '''
       if dtype == tf.float32:
         # Convert from [0, 255] -> [0.0, 1.0].
         images = images.astype(numpy.float32)
