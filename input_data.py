@@ -102,7 +102,7 @@ class DataSet(object):
       assert images.shape[3] == 1
       global U, UU
       images = images.reshape(images.shape[0], images.shape[1], images.shape[2])
-      if U == None:
+      if U is None:
         # 进行二维PCA
         # U, UU = TDPCA.TTwoDPCA(images, 15)
         U, UU = TDPCA.PCA2D_2D(images, 10, 10)
