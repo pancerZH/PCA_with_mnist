@@ -1,3 +1,5 @@
+**There may be a potential mistake in my code. If you want to refer to it, be careful!**
+
 ## PCA项目说明
 
 #### 作者：1551719  张文喆
